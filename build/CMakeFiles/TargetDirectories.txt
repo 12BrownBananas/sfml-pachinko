@@ -1,0 +1,7 @@
+C:/Users/gthompson/Documents/code/cpp/sfml_proj/build/CMakeFiles/main.dir
+C:/Users/gthompson/Documents/code/cpp/sfml_proj/build/CMakeFiles/edit_cache.dir
+C:/Users/gthompson/Documents/code/cpp/sfml_proj/build/CMakeFiles/rebuild_cache.dir
+C:/Users/gthompson/Documents/code/cpp/sfml_proj/build/CMakeFiles/list_install_components.dir
+C:/Users/gthompson/Documents/code/cpp/sfml_proj/build/CMakeFiles/install.dir
+C:/Users/gthompson/Documents/code/cpp/sfml_proj/build/CMakeFiles/install/local.dir
+C:/Users/gthompson/Documents/code/cpp/sfml_proj/build/CMakeFiles/install/strip.dir

@@ -1,0 +1,1 @@
+ "C:/Users/gthompson/Documents/code/cpp/makefiles/sfml_makefile/build/lib/libsfml-graphics.a" "C:/Users/gthompson/Documents/code/cpp/makefiles/sfml_makefile/build/lib/libsfml-window.a" "C:/Users/gthompson/Documents/code/cpp/makefiles/sfml_makefile/build/lib/libsfml-system.a" -lkernel32 -luser32 -lgdi32 -lwinspool -lshell32 -lole32 -loleaut32 -luuid -lcomdlg32 -ladvapi32 
