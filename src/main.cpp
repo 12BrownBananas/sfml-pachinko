@@ -85,7 +85,7 @@ int main()
     spawnClock.restart();
     float spawnTime = 0.1f;
     int spawnCount = 0;
-    int spawnMax = 20;
+    int spawnMax = 20; //You may need to reduce this value if the simulation starts to chug.
 
     int score = 0;
     
@@ -93,7 +93,7 @@ int main()
     windowConstraint.get()->updateConstrainingObjects(otherShapes);
 
     //create sectors by evenly subdividing screen 
-    CollisionSectors collisionSectors{3, 2, wwidth, wheight, windowConstraint};
+    CollisionSectors collisionSectors{5, 5, wwidth, wheight, windowConstraint}; //Increasing sector subdivisions may improve performance, or perhaps not.
 
     InputManager manager{0, &window};
     manager.registerInput(sf::Keyboard::A, InputSemantics::accept, InputType::keyboard);
@@ -134,7 +134,7 @@ int main()
 
                 collisionSectors.recalculateSectors();
 
-                /* NOTE: Very bad. Code duplication. Reflection. */
+                /* NOTE: Code duplication. Reflection. Consider refactoring. */
                 if (dynamic_cast<ScreenspacePositionConstraint*>(newShape.get()->getPositionConstraint())) {
                     ScreenspacePositionConstraint* pos = dynamic_cast<ScreenspacePositionConstraint*>(newShape.get()->getPositionConstraint());
                     auto sameSectorObj = collisionSectors.getObjectsInSameSectors(newShape);
@@ -153,9 +153,8 @@ int main()
         }
         window.clear();
         for (auto i : pachinkoBalls) {
-            i.get()->update();
             collisionSectors.recalculateSectors();
-            /* NOTE: Very bad. Code duplication. Reflection. */
+            /* NOTE: Code duplication. Reflection. Consider refactoring. */
             if (dynamic_cast<ScreenspacePositionConstraint*>(i.get()->getPositionConstraint())) {
                 ScreenspacePositionConstraint* pos = dynamic_cast<ScreenspacePositionConstraint*>(i.get()->getPositionConstraint());
                 auto sameSectorObj = collisionSectors.getObjectsInSameSectors(i);
@@ -163,6 +162,11 @@ int main()
                     sameSectorObj.push_back(b);
                 }
                 pos->updateConstrainingObjects(sameSectorObj);
+            }
+            i.get()->update();
+            auto iPos = i.get()->getPosition();
+            if (iPos.x == 0 && iPos.y == 0) { //Brute force correction for the issue where the balls get stuck in the top-left corner sometimes.
+                i.get()->setPosition(iPos.x+1.f, iPos.y+1.f);
             }
             if (i->getPosition().y > wheight+radius*2.f) {
                 shapesToRemove.push_back(i);

@@ -422,7 +422,9 @@ CollisionSectors::CollisionSectors(int rows, int columns, float totalWidth, floa
     float sectorHeight = totalHeight/rows;
     for (int i = 0; i < rows; i++) {
         for (int j = 0; j < columns; j++) {
-            auto sector = std::shared_ptr<Rectangle>(new Rectangle(sectorWidth, sectorHeight, (sectorWidth/2)+(sectorWidth*j), (sectorHeight/2)+(sectorHeight*i)));
+            //5.f is an arbitrary pad value to ensure "sufficient overlap" between sectors.
+            //There's probably a more certain way to calculate this, but for now, it's a fine "guess" value.
+            auto sector = std::shared_ptr<Rectangle>(new Rectangle(sectorWidth+5.f, sectorHeight+5.f, (sectorWidth/2)+(sectorWidth*j), (sectorHeight/2)+(sectorHeight*i)));
             sector.get()->setPositionConstraint(world);
             _sectors.push_back(sector);
         }
@@ -448,10 +450,11 @@ std::vector<std::shared_ptr<CollidableUIObj>> CollisionSectors::getObjectsInSame
 void CollisionSectors::recalculateSectors() {
     _objToSector.clear();
     _sectorToObj.clear();
+    int sectorId = 0;
     for (auto sect : _sectors) {
-        auto cl = sect.get()->getCollisionList();
-        auto ls = _sectorToObj[sect.get()];
-        ls.insert(ls.end(), cl.begin(), cl.end());
+        auto cl = sect.get()->getCollisionList(); //Gets all of the objects colliding with this sector. (cl = "collision list")
+        auto ls = _sectorToObj[sect.get()]; //Inserts a new element to _sectorToObj
+        ls.insert(ls.end(), cl.begin(), cl.end()); //Appends the entire vector "cl" to the end of "ls"
         _sectorToObj[sect.get()] = ls;
         for (auto c : cl) {
             auto sl = _objToSector[c];
